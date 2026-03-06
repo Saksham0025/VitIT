@@ -29,7 +29,10 @@ app.use('/login',loginRoutes);
 app.use('/signup',signupRoutes);
 app.use('/', postRoutes);
 app.use('/', commentRoutes);
+<<<<<<< HEAD
 app.use('/', userRoute)
+=======
+>>>>>>> ded62e09e1e90935e1e4b08fda72c314015dba66
 
 app.get('/dashboard', authMiddleWare,(req, res) => {
   console.log(req.user);

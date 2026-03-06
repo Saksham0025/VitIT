@@ -13,8 +13,11 @@ const SignUp = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+<<<<<<< HEAD
     const navigate = useNavigate();
 
+=======
+>>>>>>> ded62e09e1e90935e1e4b08fda72c314015dba66
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -35,6 +38,7 @@ const SignUp = () => {
     };
 
     return (
+<<<<<<< HEAD
         <div className="signup-container">
             <div className="signup-left">
                 <div className="quote-container">
@@ -108,6 +112,39 @@ const SignUp = () => {
                         Already have an account? <a href="/login">Sign In</a>
                     </p>
                 </div>
+=======
+        <div className="auth-container">
+            <div className="auth-card">
+                <h2>Create Account</h2>
+                <p>Join PostNet and start connecting</p>
+                <form onSubmit={handleSubmit}>
+                    <input
+                        name="name"
+                        className="input"
+                        type="text"
+                        placeholder="Full Name"
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        name="email"
+                        className="input"
+                        type="email"
+                        placeholder="Email Address"
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        name="password"
+                        className="input"
+                        type="password"
+                        placeholder="Password"
+                        onChange={handleChange}
+                        required
+                    />
+                    <button type="submit">Sign up</button>
+                </form>
+>>>>>>> ded62e09e1e90935e1e4b08fda72c314015dba66
             </div>
         </div>
     );
