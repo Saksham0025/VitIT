@@ -23,7 +23,7 @@ router.get('/user/:id', authMiddleWare, async (req,res) => {
         jsonData["Self"] = true;
     }else{
         jsonData["Self"] = false;
-    }    
+    }        
     res.send(jsonData);
 })
 
@@ -32,9 +32,8 @@ router.get('/user/:id/posts', authMiddleWare, async (req,res) => {
     const query=`
         SELECT *
         FROM posts
-        WHERE user_id = $1;
+        WHERE user_id = $1 AND posts.is_deleted=false;
     `
-
     const responseData = await pool.query(query,[id]);
     res.send(responseData.rows);
     
@@ -78,6 +77,64 @@ router.post('/user/:id/follow', authMiddleWare,async (req,res) => {
     
     const jsonFull = JSON.stringify({ action: data, followers: count.f }); 
     res.send(jsonFull);
+    
+})
+
+
+
+router.get('/getid',authMiddleWare, async (req,res) => {
+    const id = req.user.id;
+    res.send({id: id});
+})
+
+router.get('/:id/followers', authMiddleWare, async(req,res) => {
+    const id = req.params.id;
+    const query = `
+        SELECT 
+            f.follower_id, 
+            u.name AS follower_name, 
+            f.created_at AS followed_on
+        FROM follows f
+        JOIN users u ON f.follower_id = u.id
+        WHERE f.following_id = $1;
+        `;
+    const responseData = await pool.query(query,[id])
+    res.send(responseData.rows);
+    
+})
+
+router.get('/:id/following', authMiddleWare, async(req,res) => {
+    const id = req.params.id;
+    const query = `
+        SELECT 
+            f.following_id, 
+            u.name AS following_name, 
+            f.created_at AS followed_on
+        FROM follows f
+        JOIN users u ON f.following_id = u.id
+        WHERE f.follower_id = $1;
+        `;
+    const responseData = await pool.query(query,[id])
+    res.send(responseData.rows);
+    
+})
+
+router.get('/logout', authMiddleWare, async(req,res) => {
+    res.clearCookie();
+    res.send("");
+})
+
+router.get('/users', authMiddleWare, async (req,res)=>{
+    const u = req.query.q;
+    const query = `
+        SELECT *
+        FROM users
+        WHERE users.name ILIKE '%' || $1 || '%'
+        LIMIT $2;
+        `;
+    const responseData = await pool.query(query, [u,5]);
+    res.send(responseData.rows);
+    
     
 })
 
